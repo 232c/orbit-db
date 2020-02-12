@@ -36,6 +36,7 @@ class Celsius232DB {
     options = Object.assign({
       create: true,
       format: 'dag-pb',
+      pin: true,
       type: LogStore.type,
       accessController: {
         type: '232c',
