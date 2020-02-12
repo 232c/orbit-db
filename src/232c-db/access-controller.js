@@ -10,7 +10,7 @@ class Celsius232AC extends AccessController {
 
     constructor(callback) {
         super()
-        this._callback = callback
+        this._callback = typeof callback === 'function' ? callback : NOOP
     }
 
     static get type() {
