@@ -6,6 +6,8 @@ const rmrf = require('rimraf')
 const path = require('path')
 const OrbitDB = require('../src/OrbitDB')
 
+require('../src/232c-db/')
+
 // Include test utilities
 const {
   config,
