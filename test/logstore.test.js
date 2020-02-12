@@ -5,6 +5,7 @@ const mapSeries = require('p-map-series')
 const rmrf = require('rimraf')
 const path = require('path')
 const OrbitDB = require('../src/232c-db/')
+const io = require('orbit-db-io')
 
 // Include test utilities
 const {
@@ -69,6 +70,17 @@ Object.keys(testAPIs).forEach(API => {
         db = await orbitdb1.logstore(dbAddr)
         const items = db.iterator({ limit: -1 }).collect()
         assert.equal(items.length, 0)
+      })
+
+      it('adds the db metadata that is > 256 bytes', async () => {
+        const meta = 'a'.repeat(1024)
+        db = await orbitdb1.logstore('meta database', {
+          meta,
+        })
+        assert.equal(db.metaData, meta)
+
+        const manifest = await io.read(ipfs, db.address.root)
+        assert.deepStrictEqual(manifest.meta, meta)
       })
 
       it('returns the added entry\'s hash, 1 entry', async () => {
