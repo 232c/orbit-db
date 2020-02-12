@@ -4,9 +4,7 @@ const assert = require('assert')
 const mapSeries = require('p-map-series')
 const rmrf = require('rimraf')
 const path = require('path')
-const OrbitDB = require('../src/OrbitDB')
-
-require('../src/232c-db/')
+const OrbitDB = require('../src/232c-db/')
 
 // Include test utilities
 const {
@@ -33,7 +31,9 @@ Object.keys(testAPIs).forEach(API => {
       rmrf.sync(dbPath)
       ipfsd = await startIpfs(API, config.daemon1)
       ipfs = ipfsd.api
-      orbitdb1 = await OrbitDB.createInstance(ipfs, { directory: path.join(dbPath, '1') })
+      orbitdb1 = await OrbitDB.createInstance(ipfs, { 
+        directory: path.join(dbPath, '1'),
+      })
     })
 
     after(async () => {
