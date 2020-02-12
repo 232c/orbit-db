@@ -9,6 +9,7 @@ const createDBManifest = async (ipfs, name, type, accessControllerAddress, optio
     accessController: (path.posix || path).join('/ipfs', accessControllerAddress)
   },
   // meta field is only added to manifest if options.meta is defined
+  // 232c logstore requires the meta field
   options.meta !== undefined ? { meta: options.meta } : {}
   )
 

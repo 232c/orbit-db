@@ -18,6 +18,8 @@ const { isDefined, io } = require('./utils')
 const Storage = require('orbit-db-storage-adapter')
 const migrations = require('./migrations')
 
+const LogStore = require('./232c-logstore')
+
 const Logger = require('logplease')
 const logger = Logger.create('orbit-db')
 Logger.setLogLevel('ERROR')
@@ -28,7 +30,8 @@ const databaseTypes = {
   eventlog: EventStore,
   feed: FeedStore,
   docstore: DocumentStore,
-  keyvalue: KeyValueStore
+  keyvalue: KeyValueStore,
+  '232c:logstore': LogStore,
 }
 
 class OrbitDB {
@@ -72,6 +75,7 @@ class OrbitDB {
   static get KeyValueStore () { return KeyValueStore }
   static get CounterStore () { return CounterStore }
   static get DocumentStore () { return DocumentStore }
+  static get LogStore () { return LogStore }
 
   get cache () { return this.caches[this.directory].cache }
 
@@ -125,6 +129,20 @@ class OrbitDB {
   }
 
   /* Databases */
+  
+  /** 232c logstore */
+  async logstore(address, options = {}) {
+    options = Object.assign({
+      create: true,
+      format: 'dag-pb',
+      type: '232c:logstore',
+      accessController: {
+        write: ['*']
+      }
+    }, options)
+    return this.open(address, options)
+  }
+
   async feed (address, options = {}) {
     options = Object.assign({ create: true, type: 'feed' }, options)
     return this.open(address, options)
@@ -441,6 +459,8 @@ class OrbitDB {
     // Get the database manifest from IPFS
     const manifest = await io.read(this._ipfs, dbAddress.root)
     logger.debug(`Manifest for '${dbAddress}':\n${JSON.stringify(manifest, null, 2)}`)
+
+    // console.log(manifest)
 
     // Make sure the type from the manifest matches the type that was given as an option
     if (manifest.name !== dbAddress.path) { throw new Error(`Manifest '${manifest.name}' cannot be opened as '${dbAddress.path}'`) }

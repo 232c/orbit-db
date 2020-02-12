@@ -1,12 +1,11 @@
 {
-  "name": "orbit-db",
+  "name": "@232c/orbit-db",
   "version": "0.23.1",
-  "description": "Distributed p2p database on IPFS",
-  "author": "Haad",
+  "description": "Modified OrbitDB for 232°C",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/orbitdb/orbit-db"
+    "url": "https://github.com/232c/orbit-db"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -63,7 +62,6 @@
     "remark-cli": "^5.0.0",
     "remark-validate-links": "^7.0.0",
     "rimraf": "^2.6.2",
-    "standard": "^12.0.1",
     "validate-maintainers": "^1.1.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
@@ -77,6 +75,7 @@
     "lint:docs": "remark -qf -u validate-links .",
     "test:all": "npm run test:browser-multiple-tabs && npm run test",
     "test": "cross-env TEST=all mocha",
+    "test:232c-logstore": "npx mocha test/logstore.test.js",
     "test:browser-multiple-tabs": "npm run build:dist && cpy dist/orbitdb.min.js ./test/browser --rename=orbitdb.js && cpy node_modules/ipfs/dist/index.js ./test/browser --rename=ipfs.js && cpy node_modules/orbit-db-identity-provider/dist/index-browser.min.js ./test/browser --rename=identities.js && cpy node_modules/ipfs-log/dist/ipfslog.min.js ./test/browser && mocha ./test/browser/concurrent.spec.js",
     "build": "npm run build:es5 && npm run build:debug && npm run build:dist && npm run build:examples && npm run build:docs/toc",
     "build:examples": "webpack --config conf/webpack.example.config.js --sort-modules-by size",
@@ -92,20 +91,5 @@
       "examples/**",
       "benchmarks/**"
     ]
-  },
-  "localMaintainers": [
-    "haad <haad@haja.io>",
-    "shamb0t <shams@haja.io>",
-    "hajamark <mark@haja.io>"
-  ],
-  "keywords": [
-    "crdt",
-    "database",
-    "decentralized",
-    "decentralised",
-    "distributed",
-    "ipfs",
-    "p2p",
-    "peer-to-peer"
-  ]
+  }
 }
