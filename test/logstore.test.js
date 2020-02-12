@@ -62,6 +62,7 @@ Object.keys(testAPIs).forEach(API => {
         db = await orbitdb1.logstore(dbAddr)
         const meta = db.options.meta
         assert.equal(meta, 'test')
+        assert.equal(db.metaData, 'test')
       })
 
       it('returns 0 items when it\'s a fresh database', async () => {

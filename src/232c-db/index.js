@@ -39,9 +39,21 @@ class Celsius232DB {
       type: LogStore.type,
       accessController: {
         type: '232c',
+        callback: options.acCallback || undefined
       }
     }, options)
     return this._orbitdb.open(address, options)
+  }
+
+  createDataStore(name, metaData = null, acCallback = undefined) {
+    return this.logstore(name, {
+      meta: metaData,
+      acCallback,
+    })
+  }
+
+  openDataStore(address, options = {}) {
+    return this.logstore(address, options)
   }
 
 }

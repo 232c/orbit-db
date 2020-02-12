@@ -13,6 +13,10 @@ class LogStore extends EventStore {
     return this._addOperation(data, options)
   }
 
+  get metaData() {
+    return this.options.meta
+  }
+
   static get type() {
     return '232c:logstore'
   }
