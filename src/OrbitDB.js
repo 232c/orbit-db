@@ -18,8 +18,6 @@ const { isDefined, io } = require('./utils')
 const Storage = require('orbit-db-storage-adapter')
 const migrations = require('./migrations')
 
-const LogStore = require('./232c-logstore')
-
 const Logger = require('logplease')
 const logger = Logger.create('orbit-db')
 Logger.setLogLevel('ERROR')
@@ -31,7 +29,6 @@ const databaseTypes = {
   feed: FeedStore,
   docstore: DocumentStore,
   keyvalue: KeyValueStore,
-  '232c:logstore': LogStore,
 }
 
 class OrbitDB {
@@ -75,7 +72,6 @@ class OrbitDB {
   static get KeyValueStore () { return KeyValueStore }
   static get CounterStore () { return CounterStore }
   static get DocumentStore () { return DocumentStore }
-  static get LogStore () { return LogStore }
 
   get cache () { return this.caches[this.directory].cache }
 
@@ -129,20 +125,6 @@ class OrbitDB {
   }
 
   /* Databases */
-  
-  /** 232c logstore */
-  async logstore(address, options = {}) {
-    options = Object.assign({
-      create: true,
-      format: 'dag-pb',
-      type: '232c:logstore',
-      accessController: {
-        write: ['*']
-      }
-    }, options)
-    return this.open(address, options)
-  }
-
   async feed (address, options = {}) {
     options = Object.assign({ create: true, type: 'feed' }, options)
     return this.open(address, options)
@@ -534,6 +516,22 @@ class OrbitDB {
   static parseAddress (address) {
     return OrbitDBAddress.parse(address)
   }
+}
+
+const LogStore = require('./232c-logstore')
+OrbitDB.addDatabaseType(LogStore.type, LogStore)
+
+/** 232c-db logstore */
+OrbitDB.prototype.logstore = function (address, options = {}) {
+  options = Object.assign({
+    create: true,
+    format: 'dag-pb',
+    type: LogStore.type,
+    accessController: {
+      write: ['*']
+    }
+  }, options)
+  return this.open(address, options)
 }
 
 module.exports = OrbitDB
