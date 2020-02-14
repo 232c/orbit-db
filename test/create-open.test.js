@@ -11,7 +11,7 @@ const Zip = require('adm-zip')
 const OrbitDB = require('../src/OrbitDB')
 const OrbitDBAddress = require('../src/orbit-db-address')
 const Identities = require('orbit-db-identity-provider')
-const io = require('orbit-db-io')
+const fileio = require('../src/fileio')
 
 // Include test utilities
 const {
@@ -123,8 +123,8 @@ Object.keys(testAPIs).forEach(API => {
 
         it('database has the correct address', async () => {
           assert.equal(db.address.toString().indexOf('/orbitdb'), 0)
-          assert.equal(db.address.toString().indexOf('zd'), 9)
-          assert.equal(db.address.toString().indexOf('second'), 59)
+          assert.equal(db.address.toString().indexOf('Qm'), 9)
+          assert.equal(db.address.toString().indexOf('second'), 56)
         })
 
         it('saves the database locally', async () => {
@@ -141,8 +141,9 @@ Object.keys(testAPIs).forEach(API => {
 
         it('saves database manifest file locally', async () => {
           const manifestHash = db.id.split('/')[2]
-          const manifest = await io.read(ipfs, manifestHash)
-          assert.notEqual(manifest)
+          const manifest = await fileio.read(ipfs, manifestHash)
+          assert.notEqual(manifest, undefined)
+          assert.notEqual(manifest, null)
           assert.equal(manifest.name, 'second')
           assert.equal(manifest.type, 'feed')
           assert.notEqual(manifest.accessController, null)
@@ -234,7 +235,7 @@ Object.keys(testAPIs).forEach(API => {
 
           it('creates a manifest with no meta field', async () => {
             db = await orbitdb.create('no-meta', 'feed')
-            const manifest = await io.read(ipfs, db.address.root)
+            const manifest = await fileio.read(ipfs, db.address.root)
             assert.strictEqual(manifest.meta, undefined)
             assert.deepStrictEqual(Object.keys(manifest).filter(k => k === 'meta'), [])
           })
@@ -242,7 +243,7 @@ Object.keys(testAPIs).forEach(API => {
           it('creates a manifest with a meta field', async () => {
             const meta = { test: 123 }
             db = await orbitdb.create('meta', 'feed', { meta })
-            const manifest = await io.read(ipfs, db.address.root)
+            const manifest = await fileio.read(ipfs, db.address.root)
             assert.deepStrictEqual(manifest.meta, meta)
             assert.deepStrictEqual(Object.keys(manifest).filter(k => k === 'meta'), ['meta'])
           })
@@ -286,7 +287,7 @@ Object.keys(testAPIs).forEach(API => {
         it('returns the address that would have been created', async () => {
           db = await orbitdb.create('third', 'feed', { replicate: false })
           assert.equal(address.toString().indexOf('/orbitdb'), 0)
-          assert.equal(address.toString().indexOf('zd'), 9)
+          assert.equal(address.toString().indexOf('Qm'), 9)
           assert.equal(address.toString(), db.address.toString())
         })
       })
@@ -320,24 +321,24 @@ Object.keys(testAPIs).forEach(API => {
       it('opens a database - name only', async () => {
         db = await orbitdb.open('abc', { create: true, type: 'feed', overwrite: true })
         assert.equal(db.address.toString().indexOf('/orbitdb'), 0)
-        assert.equal(db.address.toString().indexOf('zd'), 9)
-        assert.equal(db.address.toString().indexOf('abc'), 59)
+        assert.equal(db.address.toString().indexOf('Qm'), 9)
+        assert.equal(db.address.toString().indexOf('abc'), 56)
       })
 
       it('opens a database - with a different identity', async () => {
         const identity = await Identities.createIdentity({ id: 'test-id', keystore: orbitdb.keystore })
         db = await orbitdb.open('abc', { create: true, type: 'feed', overwrite: true, identity })
         assert.equal(db.address.toString().indexOf('/orbitdb'), 0)
-        assert.equal(db.address.toString().indexOf('zd'), 9)
-        assert.equal(db.address.toString().indexOf('abc'), 59)
+        assert.equal(db.address.toString().indexOf('Qm'), 9)
+        assert.equal(db.address.toString().indexOf('abc'), 56)
         assert.equal(db.identity, identity)
       })
 
       it('opens the same database - from an address', async () => {
         db = await orbitdb.open(db.address)
         assert.equal(db.address.toString().indexOf('/orbitdb'), 0)
-        assert.equal(db.address.toString().indexOf('zd'), 9)
-        assert.equal(db.address.toString().indexOf('abc'), 59)
+        assert.equal(db.address.toString().indexOf('Qm'), 9)
+        assert.equal(db.address.toString().indexOf('abc'), 56)
       })
 
       it('opens a database and adds the creator as the only writer', async () => {

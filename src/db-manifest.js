@@ -1,5 +1,5 @@
 const path = require('path')
-const io = require('orbit-db-io')
+const fileio = require('./fileio')
 
 // Creates a DB manifest file and saves it in IPFS
 const createDBManifest = async (ipfs, name, type, accessControllerAddress, options) => {
@@ -13,7 +13,7 @@ const createDBManifest = async (ipfs, name, type, accessControllerAddress, optio
   options.meta !== undefined ? { meta: options.meta } : {}
   )
 
-  return io.write(ipfs, options.format || 'dag-cbor', manifest, options)
+  return fileio.write(ipfs, manifest, options)
 }
 
 module.exports = createDBManifest

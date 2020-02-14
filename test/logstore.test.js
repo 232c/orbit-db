@@ -5,7 +5,7 @@ const mapSeries = require('p-map-series')
 const rmrf = require('rimraf')
 const path = require('path')
 const OrbitDB = require('../src/232c-db/')
-const io = require('orbit-db-io')
+const fileio = require('../src/fileio')
 
 // Include test utilities
 const {
@@ -79,7 +79,7 @@ Object.keys(testAPIs).forEach(API => {
         })
         assert.equal(db.metaData, meta)
 
-        const manifest = await io.read(ipfs, db.address.root)
+        const manifest = await fileio.read(ipfs, db.address.root)
         assert.deepStrictEqual(manifest.meta, meta)
       })
 
