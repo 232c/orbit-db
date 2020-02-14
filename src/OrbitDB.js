@@ -440,7 +440,7 @@ class OrbitDB {
     logger.debug(`Loading Manifest for '${dbAddress}'`)
 
     // Get the database manifest from IPFS
-    const manifest = await fileio.read(this._ipfs, dbAddress.root)
+    const manifest = await fileio.readObj(this._ipfs, dbAddress.root)
     logger.debug(`Manifest for '${dbAddress}':\n${JSON.stringify(manifest, null, 2)}`)
 
     // console.log(manifest)

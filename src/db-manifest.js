@@ -13,7 +13,7 @@ const createDBManifest = async (ipfs, name, type, accessControllerAddress, optio
   options.meta !== undefined ? { meta: options.meta } : {}
   )
 
-  return fileio.write(ipfs, manifest, options)
+  return fileio.writeObj(ipfs, manifest, options)
 }
 
 module.exports = createDBManifest
