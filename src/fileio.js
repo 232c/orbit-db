@@ -33,7 +33,9 @@ const writeObj = async (ipfs, obj, options) => {
 const readFile = async (ipfs, cid, pin = true) => {
   const buf = await ipfs.cat(cid)
   if (pin) {
-    await ipfs.pin.add(cid)
+    ipfs.pin.add(cid, {
+      timeout: '5s'
+    })
   }
   return buf
 }
