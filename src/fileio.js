@@ -1,9 +1,8 @@
 
 /**
- * @typedef { string | Buffer | ArrayBuffer | Uint8Array | Blob } Data
  * @param {IPFS} ipfs
- * @param {Data} data 
- * @param {boolean} pin 
+ * @param { string | Buffer | ArrayBuffer | Uint8Array | Blob } data 
+ * @param {boolean=} pin 
  * @returns {Promise<string>} hash
  */
 const writeFile = async (ipfs, data, pin = true) => {
@@ -28,18 +27,35 @@ const writeObj = async (ipfs, obj, options) => {
 }
 
 /**
+ * @param {IPFS} ipfs 
+ * @param {string} cid 
+ * @returns {Promise}
+ */
+const pinCid = (ipfs, cid) => {
+  return ipfs.pin.add(cid, {
+    timeout: '5s'
+  })
+}
+
+/**
+ * @param {IPFS} ipfs 
+ * @param {string} cid 
+ * @param {boolean=} pin 
  * @returns {Promise<Buffer>}
  */
 const readFile = async (ipfs, cid, pin = true) => {
   const buf = await ipfs.cat(cid)
   if (pin) {
-    ipfs.pin.add(cid, {
-      timeout: '5s'
-    })
+    pinCid(ipfs, cid)
   }
   return buf
 }
 
+/**
+ * @param {IPFS} ipfs 
+ * @param {string} cid 
+ * @param {boolean=} pin 
+ */
 const readObj = async (ipfs, cid, pin = true) => {
   const buf = await readFile(ipfs, cid, pin)
   return JSON.parse(buf.toString('utf-8'))
@@ -50,4 +66,5 @@ module.exports = {
   writeFile,
   readObj,
   writeObj,
+  pinCid,
 }
