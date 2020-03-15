@@ -6,11 +6,13 @@
  * @returns {Promise<string>} hash
  */
 const writeFile = async (ipfs, data, pin = true) => {
-  const f = await ipfs.add(data, {
+  const l = ipfs.add(data, {
     pin,
   })
-  const res = f[0].hash
-  return res
+  for await (let f of l) {
+    const hash = f.cid.toString()
+    return hash
+  }
 }
 
 /**
@@ -44,7 +46,13 @@ const pinCid = (ipfs, cid) => {
  * @returns {Promise<Buffer>}
  */
 const readFile = async (ipfs, cid, pin = true) => {
-  const buf = await ipfs.cat(cid)
+  const chunks = []
+  for await (const chunk of ipfs.cat(cid)) {
+    chunks.push(chunk)
+  }
+
+  const buf = Buffer.concat(chunks)
+
   if (pin) {
     pinCid(ipfs, cid)
   }
