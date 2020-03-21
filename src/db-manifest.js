@@ -16,12 +16,4 @@ const createDBManifest = async (ipfs, name, type, accessControllerAddress, optio
   return io.write(ipfs, options.format || 'file', manifest, options)
 }
 
-// read the DB manifest file from IPFS
-const readDBManifest = async (ipfs, dbManifestCid) => {
-  return io.read(ipfs, dbManifestCid)
-}
-
-module.exports = {
-  createDBManifest,
-  readDBManifest,
-}
+module.exports = createDBManifest
