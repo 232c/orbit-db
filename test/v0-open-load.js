@@ -28,12 +28,12 @@ const {
   testAPIs,
 } = require('./utils')
 
-const dbPath = path.join('./orbitdb', 'tests', 'v0')
-const dbFixturesDir = path.join('./test', 'fixtures', 'v0', 'QmWDUfC4zcWJGgc9UHn1X3qQ5KZqBv4KCiCtjnpMmBT8JC', 'v0-db')
-const keyFixtures = path.join('./test', 'fixtures', 'keys','QmRfPsKJs9YqTot5krRibra4gPwoK4kghhU8iKWxBjGDDX')
+const dbPath = path.posix.join('./orbitdb', 'tests', 'v0')
+const dbFixturesDir = path.posix.join('./test', 'fixtures', 'v0', 'QmWDUfC4zcWJGgc9UHn1X3qQ5KZqBv4KCiCtjnpMmBT8JC', 'v0-db')
+const keyFixtures = path.posix.join('./test', 'fixtures', 'keys','QmRfPsKJs9YqTot5krRibra4gPwoK4kghhU8iKWxBjGDDX')
 
-const ipfsFixtures = path.join('./test', 'fixtures', 'ipfs.zip')
-const ipfsFixturesDir = path.join('./test', 'fixtures', 'ipfs')
+const ipfsFixtures = path.posix.join('./test', 'fixtures', 'ipfs.zip')
+const ipfsFixturesDir = path.posix.join('./test', 'fixtures', 'ipfs')
 
 Object.keys(testAPIs).forEach(API => {
   describe(`orbit-db - Backward-Compatibility - Open & Load (${API})`, function () {

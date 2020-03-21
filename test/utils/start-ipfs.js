@@ -21,7 +21,9 @@ const startIpfs = async (type, config = {}) => {
   }
 
   // Spawn an IPFS daemon (type defined in)
-  await fs.ensureDir(config.repo)
+  if (config.repo) {
+    await fs.ensureDir(config.repo)
+  }
   const IPFSFactory = IPFSCtl.createFactory(testAPIs[type])
   const ipfsd = await IPFSFactory.spawn({ ipfsOptions: config, args })
 

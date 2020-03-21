@@ -11,7 +11,7 @@ const Zip = require('adm-zip')
 const OrbitDB = require('../src/OrbitDB')
 const OrbitDBAddress = require('../src/orbit-db-address')
 const Identities = require('orbit-db-identity-provider')
-const fileio = require('../src/fileio')
+const io = require('../src/io')
 
 // Include test utilities
 const {
@@ -141,7 +141,7 @@ Object.keys(testAPIs).forEach(API => {
 
         it('saves database manifest file locally', async () => {
           const manifestHash = db.id.split('/')[2]
-          const manifest = await fileio.readObj(ipfs, manifestHash)
+          const manifest = await io.read(ipfs, manifestHash)
           assert.notEqual(manifest, undefined)
           assert.notEqual(manifest, null)
           assert.equal(manifest.name, 'second')
@@ -235,7 +235,7 @@ Object.keys(testAPIs).forEach(API => {
 
           it('creates a manifest with no meta field', async () => {
             db = await orbitdb.create('no-meta', 'feed')
-            const manifest = await fileio.readObj(ipfs, db.address.root)
+            const manifest = await io.read(ipfs, db.address.root)
             assert.strictEqual(manifest.meta, undefined)
             assert.deepStrictEqual(Object.keys(manifest).filter(k => k === 'meta'), [])
           })
@@ -243,7 +243,7 @@ Object.keys(testAPIs).forEach(API => {
           it('creates a manifest with a meta field', async () => {
             const meta = { test: 123 }
             db = await orbitdb.create('meta', 'feed', { meta })
-            const manifest = await fileio.readObj(ipfs, db.address.root)
+            const manifest = await io.read(ipfs, db.address.root)
             assert.deepStrictEqual(manifest.meta, meta)
             assert.deepStrictEqual(Object.keys(manifest).filter(k => k === 'meta'), ['meta'])
           })

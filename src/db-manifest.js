@@ -1,5 +1,5 @@
 const path = require('path')
-const fileio = require('./fileio')
+const io = require('./io')
 
 // Creates a DB manifest file and saves it in IPFS
 const createDBManifest = async (ipfs, name, type, accessControllerAddress, options) => {
@@ -13,12 +13,12 @@ const createDBManifest = async (ipfs, name, type, accessControllerAddress, optio
   options.meta !== undefined ? { meta: options.meta } : {}
   )
 
-  return fileio.writeObj(ipfs, manifest, options)
+  return io.write(ipfs, options.format || 'file', manifest, options)
 }
 
 // read the DB manifest file from IPFS
 const readDBManifest = async (ipfs, dbManifestCid) => {
-  return fileio.readObj(ipfs, dbManifestCid)
+  return io.read(ipfs, dbManifestCid)
 }
 
 module.exports = {
