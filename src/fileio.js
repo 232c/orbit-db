@@ -3,11 +3,15 @@
  * @param {IPFS} ipfs
  * @param { string | Buffer | ArrayBuffer | Uint8Array | Blob } data 
  * @param {boolean=} pin 
+ * @param {boolean=} onlyHash 
  * @returns {Promise<string>} hash
  */
-const writeFile = async (ipfs, data, pin = true) => {
+const writeFile = async (ipfs, data, pin = true, onlyHash = false) => {
   const l = ipfs.add(data, {
+    /** @default true */
     pin,
+    /** @default false */
+    onlyHash,
   })
   for await (let f of l) {
     const hash = f.cid.toString()
@@ -18,13 +22,12 @@ const writeFile = async (ipfs, data, pin = true) => {
 /**
  * @param {IPFS} ipfs
  * @param {object} obj 
- * @param {{ pin?: boolean; }=} options 
+ * @param {{ pin?: boolean; onlyHash?: boolean; }=} options 
  * @returns {Promise<string>} hash
  */
-const writeObj = async (ipfs, obj, options) => {
+const writeObj = async (ipfs, obj, options = {}) => {
   const data = Buffer.from(JSON.stringify(obj))
-  const pin = options && options.pin
-  const hash = await writeFile(ipfs, data, pin)
+  const hash = await writeFile(ipfs, data, options.pin, options.onlyHash)
   return hash
 }
 
