@@ -35,20 +35,23 @@ Object.keys(testAPIs).forEach(API => {
     before(async () => {
       config.daemon1.repo = ipfsPath1
       config.daemon2.repo = ipfsPath2
+
+      // Use memory store for quicker tests
+      const memstore = new MemStore()
+      config.daemon1.ipld = { blockService: memstore }
+      config.daemon2.ipld = { blockService: memstore }
+
       rmrf.sync(config.daemon1.repo)
       rmrf.sync(config.daemon2.repo)
       rmrf.sync(dbPath1)
       rmrf.sync(dbPath2)
+
       ipfsd1 = await startIpfs(API, config.daemon1)
       ipfsd2 = await startIpfs(API, config.daemon2)
+      
       ipfs1 = ipfsd1.api
       ipfs2 = ipfsd2.api
-      // Use memory store for quicker tests
-      const memstore = new MemStore()
-      ipfs1.dag.put = memstore.put.bind(memstore)
-      ipfs1.dag.get = memstore.get.bind(memstore)
-      ipfs2.dag.put = memstore.put.bind(memstore)
-      ipfs2.dag.get = memstore.get.bind(memstore)
+
       // Connect the peers manually to speed up test times
       await connectPeers(ipfs1, ipfs2)
     })
