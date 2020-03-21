@@ -12,10 +12,9 @@ const Keystore = require('orbit-db-keystore')
 const Identities = require('orbit-db-identity-provider')
 let AccessControllers = require('orbit-db-access-controllers')
 const OrbitDBAddress = require('./orbit-db-address')
-const createDBManifest = require('./db-manifest')
+const { createDBManifest, readDBManifest } = require('./db-manifest')
 const exchangeHeads = require('./exchange-heads')
 const { isDefined } = require('./utils')
-const fileio = require('./fileio')
 const Storage = require('orbit-db-storage-adapter')
 const migrations = require('./migrations')
 
@@ -440,7 +439,7 @@ class OrbitDB {
     logger.debug(`Loading Manifest for '${dbAddress}'`)
 
     // Get the database manifest from IPFS
-    const manifest = await fileio.readObj(this._ipfs, dbAddress.root)
+    const manifest = await readDBManifest(this._ipfs, dbAddress.root)
     logger.debug(`Manifest for '${dbAddress}':\n${JSON.stringify(manifest, null, 2)}`)
 
     // console.log(manifest)

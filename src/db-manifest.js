@@ -16,4 +16,12 @@ const createDBManifest = async (ipfs, name, type, accessControllerAddress, optio
   return fileio.writeObj(ipfs, manifest, options)
 }
 
-module.exports = createDBManifest
+// read the DB manifest file from IPFS
+const readDBManifest = async (ipfs, dbManifestCid) => {
+  return fileio.readObj(ipfs, dbManifestCid)
+}
+
+module.exports = {
+  createDBManifest,
+  readDBManifest,
+}
