@@ -31,11 +31,11 @@ const writeObj = async (ipfs, obj, options) => {
 /**
  * @param {IPFS} ipfs 
  * @param {string} cid 
- * @returns {Promise}
+ * @returns {Promise<Array<{ cid: import("cids"); }>>}
  */
-const pinCid = (ipfs, cid) => {
+const pinCid = async (ipfs, cid) => {
   return ipfs.pin.add(cid, {
-    timeout: '5s'
+    // timeout: '5s'
   })
 }
 
