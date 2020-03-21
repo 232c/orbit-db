@@ -39,9 +39,7 @@ class MemStore {
   async get(cid) {
     const key = cid.toBaseEncodedString('base58btc')
     const data = this._store.get(key)
-    if (data) {
-      return new Block(data, cid)
-    }
+    return new Block(data || Buffer.alloc(0), cid)
   }
 }
 

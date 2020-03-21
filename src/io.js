@@ -5,7 +5,7 @@ const UnixFS = require("ipfs-unixfs")
 
 /**
  * @param {IPFS} ipfs
- * @param { string | Buffer | ArrayBuffer | Uint8Array | Blob } data 
+ * @param {Buffer} data 
  * @param {boolean=} pin 
  * @param {boolean=} onlyHash 
  * @returns {Promise<string>} hash
