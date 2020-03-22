@@ -1,7 +1,7 @@
 'use strict'
 
+const multihashing = require('multihashing-async')
 const CID = require('cids')
-const Block = require("ipfs-block")
 
 const cidifyString = (str) => {
   if (!str) {
@@ -15,31 +15,36 @@ const cidifyString = (str) => {
   return new CID(str)
 }
 
-/**
- * Memory store using an LRU cache
- * as the blockService (js-ipfs-block-service) for ipld
- */
+/* Memory store using an LRU cache */
 class MemStore {
-  constructor() {
+  constructor () {
     this._store = new Map()
   }
 
-  /**
-   * @param {Block} block 
-   */
-  async put(block) {
-    const value = block.data
-    const key = block.cid.toBaseEncodedString('base58btc')
+  async put (value) {
+    const buffer = Buffer.from(JSON.stringify(value))
+    const multihash = await multihashing(buffer, 'sha2-256')
+    const cid = new CID(1, 'dag-cbor', multihash)
+    const key = cid.toBaseEncodedString('base58btc')
     this._store.set(key, value)
+
+    return cid
   }
 
-  /**
-   * @param {CID} cid 
-   */
-  async get(cid) {
-    const key = cid.toBaseEncodedString('base58btc')
-    const data = this._store.get(key)
-    return new Block(data || Buffer.alloc(0), cid)
+  async get (cid) {
+    if (CID.isCID(cid)) {
+      cid = cid.toBaseEncodedString('base58btc')
+    }
+    const data = this._store.get(cid)
+    const links = ['next', 'heads']
+    links.forEach((prop) => {
+      if(data[prop])
+      data[prop] = cidifyString(data[prop])
+    })
+
+    return {
+      value: data
+    }
   }
 }
 
