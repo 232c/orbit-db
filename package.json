@@ -35,12 +35,12 @@
   },
   "devDependencies": {
     "adm-zip": "^0.4.14",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "babel-loader": "^8.1.0",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/polyfill": "^7.8.7",
+    "@babel/preset-env": "^7.9.0",
     "cpy-cli": "^2.0.0",
     "cross-env": "^7.0.1",
     "datastore-level": "~0.14.1",
@@ -82,7 +82,7 @@
     "build:dist": "webpack --config conf/webpack.config.js --sort-modules-by size && mkdirp examples/browser/lib && cpy dist/orbitdb.min.js examples/browser/lib",
     "build:debug": "webpack --config conf/webpack.debug.config.js --sort-modules-by size && mkdirp examples/browser/lib && cpy dist/orbitdb.js examples/browser/lib && cpy dist/orbitdb.js.map examples/browser/lib",
     "build:docs/toc": "markdown-toc --no-first1 -i README.md && markdown-toc --no-first1 -i API.md && markdown-toc --no-first1 -i GUIDE.md && markdown-toc --no-first1 -i CHANGELOG.md && markdown-toc --no-first1 -i FAQ.md ",
-    "build:es5": "babel src --out-dir ./dist/es5/ --presets babel-preset-env --plugins babel-plugin-transform-runtime"
+    "build:es5": "babel src --out-dir ./dist/es5/ --presets @babel/preset-env --plugins @babel/plugin-transform-runtime"
   },
   "standard": {
     "env": "mocha",
