@@ -1,6 +1,6 @@
 {
   "name": "@232c/orbit-db",
-  "version": "0.24.0-rc.1",
+  "version": "0.24.0",
   "description": "Modified version of OrbitDB for 232°C",
   "license": "MIT",
   "repository": {
