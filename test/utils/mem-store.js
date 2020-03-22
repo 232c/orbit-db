@@ -31,15 +31,27 @@ class MemStore {
     return cid
   }
 
-  async get (cid) {
+  async get (cid, ipfs) {
     if (CID.isCID(cid)) {
       cid = cid.toBaseEncodedString('base58btc')
     }
-    const data = this._store.get(cid)
+
+    let data = this._store.get(cid)
+    if (!data) {
+      // io.write(ipfs, 'file', obj, options) puts the object as a file using `ipfs.add`
+      // can't call into the `ipfs.dag.add` API and put data into the MemStore
+      // so read data from IPFS using `ipfs.cat` instead
+      const chunks = []
+      for await (const chunk of ipfs.cat(cid)) {
+        chunks.push(chunk)
+      }
+      data = Buffer.concat(chunks)
+    }
+
     const links = ['next', 'heads']
     links.forEach((prop) => {
       if(data[prop])
-      data[prop] = cidifyString(data[prop])
+        data[prop] = cidifyString(data[prop])
     })
 
     return {

@@ -55,7 +55,7 @@ const read = async (ipfs, cid) => {
   let data = node.toJSON().data
 
   try {
-    return JSON.parse(data)
+    return JSON.parse(Buffer.from(data))
   } catch (_) { }
 
   // io.write(ipfs, "file", obj, options)
