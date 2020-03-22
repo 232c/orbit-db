@@ -24,3 +24,6 @@ dist/
 
 # Don't track Visual Studio Code settings
 .vscode
+
+# Don't track output of 'npm pack'
+*.tgz

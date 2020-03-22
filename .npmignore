@@ -18,6 +18,12 @@ dist/orbitdb.js
 # See examples at https://github.com/orbitdb/orbit-db
 images/
 
+# Don't track Visual Studio Code settings
+.vscode
+
+# Output of 'npm pack'
+*.tgz
+
 .git
 .circleci
 benchmarks
@@ -30,3 +36,5 @@ API.md
 CHANGELOG.md
 FAQ.md
 GUIDE.md
+
+.eslintrc
