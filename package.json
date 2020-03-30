@@ -1,11 +1,11 @@
 {
-  "name": "@232c/orbit-db",
+  "name": "@paper-db/orbit-db",
   "version": "0.24.0",
-  "description": "Modified version of OrbitDB for 232°C",
+  "description": "Modified version of OrbitDB for PaperDB",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/232c/orbit-db"
+    "url": "https://github.com/PaperDB/orbit-db"
   },
   "engines": {
     "node": ">=10.0.0"

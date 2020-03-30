@@ -443,8 +443,6 @@ class OrbitDB {
     const manifest = await io.read(this._ipfs, dbAddress.root)
     logger.debug(`Manifest for '${dbAddress}':\n${JSON.stringify(manifest, null, 2)}`)
 
-    // console.log(manifest)
-
     // Make sure the type from the manifest matches the type that was given as an option
     if (manifest.name !== dbAddress.path) { throw new Error(`Manifest '${manifest.name}' cannot be opened as '${dbAddress.path}'`) }
     if (options.type && manifest.type !== options.type) { throw new Error(`Database '${dbAddress}' is type '${manifest.type}' but was opened as '${options.type}'`) }

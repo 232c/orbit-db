@@ -1,6 +1,6 @@
-# @232c/OrbitDB
+# @paper-db/orbit-db
 
-> Modified version of OrbitDB for [232°C](Modified version of OrbitDB for 232°C)
+> Modified version of OrbitDB for [PaperDB](https://github.com/PaperDB/PaperDB)
 
 Significant changes from the [original version of orbit-db](https://github.com/orbitdb/orbit-db):
 
