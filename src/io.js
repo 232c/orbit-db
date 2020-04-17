@@ -11,15 +11,20 @@ const UnixFS = require("ipfs-unixfs")
  * @returns {Promise<string>} hash
  */
 const writeFile = async (ipfs, data, pin = true, onlyHash = false) => {
-  const l = ipfs.add(data, {
+  const l = await ipfs.add(data, {
     /** @default true */
     pin,
     /** @default false */
     onlyHash,
   })
-  for await (let f of l) {
-    const hash = f.cid.toString()
-    return hash
+
+  if (!Array.isArray(l)) { // work in both js-ipfs 0.40 and > 0.40
+    for await (let f of l) {
+      const hash = f.cid.toString()
+      return hash
+    }
+  } else {
+    return l[0].hash
   }
 }
 
