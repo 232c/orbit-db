@@ -1,6 +1,6 @@
 {
   "name": "@paper-db/orbit-db",
-  "version": "0.24.0",
+  "version": "0.24.1",
   "description": "Modified version of OrbitDB for PaperDB",
   "license": "MIT",
   "repository": {
